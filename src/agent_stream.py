@@ -3,11 +3,24 @@
 Provides generator-based ReAct loop yielding real-time events for Streamlit UI.
 """
 from dataclasses import dataclass, field
+import os
+import sys
 import time
 from typing import Any, Generator, Literal
 
-from src.prompts import REACT_AGENT_SYSTEM_PROMPT
-from src.app import _format_threads_observation
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+try:
+    from src.prompts import REACT_AGENT_SYSTEM_PROMPT
+    from src.app import _format_threads_observation
+except ModuleNotFoundError:
+    from prompts import REACT_AGENT_SYSTEM_PROMPT
+    from app import _format_threads_observation
 
 WRITE_TOOLS = {"threads_create_thread", "threads_reply_to_thread"}
 INTERACTIVE_TOOLS = {"ask_user_input", "ask_user_choice"}
