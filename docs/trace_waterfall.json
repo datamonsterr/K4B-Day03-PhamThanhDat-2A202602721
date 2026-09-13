@@ -1,42 +1,31 @@
 [
   {
     "step": 1,
-    "query": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất liên quan đến chủ đề AI trên kênh",
+    "query": "Hãy tra cứu các chỉ số tương tác (views, likes, replies, reposts) của bài đăng có mã 'th_post_001'.",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "threads_search",
+    "tool_name": "threads_get_insights",
     "arguments": {
-      "limit": 5,
-      "query": "AI",
-      "sort_by": "top_views"
+      "thread_id": "th_post_001"
     },
     "observation": {
       "status": "SUCCESS",
-      "query": "AI",
-      "sort_by": "top_views",
-      "count": 1,
-      "data": [
-        {
-          "id": "th_post_001",
-          "text": "ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent",
-          "timestamp": "2026-09-12T10:00:00Z",
-          "media_type": "TEXT_POST",
-          "permalink": "https://www.threads.net/@vinuni_ai_hub/post/th_post_001",
-          "reply_control": "everyone",
-          "views": 25400,
-          "likes": 1820,
-          "replies": 125,
-          "reposts": 88
-        }
-      ]
+      "thread_id": "th_post_001",
+      "metrics": {
+        "views": 25400,
+        "likes": 1820,
+        "replies": 125,
+        "reposts": 88,
+        "quotes": 34
+      }
     },
-    "latency_ms": 11248.37
+    "latency_ms": 0.03
   },
   {
     "step": 2,
-    "query": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất liên quan đến chủ đề AI trên kênh",
+    "query": "Hãy tra cứu các chỉ số tương tác (views, likes, replies, reposts) của bài đăng có mã 'th_post_001'.",
     "action_type": "FINAL_ANSWER",
     "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Kết quả tìm kiếm cho chủ đề 'AI' (Lượt xem cao nhất):\n1. [th_post_001]: \"ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent\" (25,400 Views, 1,820 Likes) - Link: https://www.threads.net/@vinuni_ai_hub/post/th_post_001",
+    "output": "Chỉ số tương tác bài viết 'th_post_001': 25,400 Views, 1,820 Likes, 125 Replies, 88 Reposts, 34 Quotes.",
     "latency_ms": 10.0
   }
 ]

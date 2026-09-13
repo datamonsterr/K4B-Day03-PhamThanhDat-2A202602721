@@ -151,5 +151,111 @@ def test_live_openrouter_baseline_response():
     )
     assert isinstance(response, str)
     assert len(response.strip()) > 0
+    if response.startswith("[OpenRouter Exception]: Rate limit") or "Rate limit" in response:
+        pytest.skip(f"OpenRouter rate limit reached: {response}")
     assert not response.startswith("[OpenRouter Error]")
     assert not response.startswith("[OpenRouter Exception]")
+
+
+def test_openai_init_base_url_default_and_custom():
+    """OpenAIProvider accepts base_url argument or reads OPENAI_BASE_URL from env."""
+    with patch.dict(os.environ, {"OPENAI_BASE_URL": "http://127.0.0.1:20128/v1"}):
+        provider = OpenAIProvider(api_key="test-key")
+        assert provider.base_url == "http://127.0.0.1:20128/v1"
+
+    provider_custom = OpenAIProvider(api_key="test-key", base_url="http://custom-host:9999/v1")
+    assert provider_custom.base_url == "http://custom-host:9999/v1"
+
+    with patch.dict(os.environ, {}, clear=True):
+        provider_default = OpenAIProvider(api_key="test-key")
+        assert provider_default.base_url == "http://localhost:20128/v1"
+
+
+def test_openai_generate_without_api_key_returns_error_string():
+    """When API key is empty or placeholder, generate() returns an [OpenAI Error] string."""
+    provider = OpenAIProvider(api_key="")
+    response = provider.generate("Xin chào!")
+    assert response.startswith("[OpenAI Error]:")
+
+    provider_placeholder = OpenAIProvider(api_key="your_openai_api_key_here")
+    response_placeholder = provider_placeholder.generate("Xin chào!")
+    assert response_placeholder.startswith("[OpenAI Error]:")
+
+
+def test_openai_generate_passes_base_url_to_client():
+    """generate() passes base_url to OpenAI client and returns content."""
+    with patch("openai.OpenAI") as mock_openai_cls:
+        mock_client = MagicMock()
+        mock_response = MagicMock()
+        mock_choice = MagicMock()
+        mock_choice.message.content = "Xin chào từ 9router local model!"
+        mock_response.choices = [mock_choice]
+        mock_client.chat.completions.create.return_value = mock_response
+        mock_openai_cls.return_value = mock_client
+
+        provider = OpenAIProvider(
+            api_key="test-key",
+            model="gh/gpt-4o-mini",
+            base_url="http://localhost:20128/v1",
+        )
+        response = provider.generate("Xin chào!", system_prompt="System prompt")
+
+        assert response == "Xin chào từ 9router local model!"
+        mock_openai_cls.assert_called_once_with(
+            api_key="test-key",
+            base_url="http://localhost:20128/v1",
+        )
+        mock_client.chat.completions.create.assert_called_once()
+        kwargs = mock_client.chat.completions.create.call_args.kwargs
+        assert kwargs["model"] == "gh/gpt-4o-mini"
+        assert kwargs["messages"] == [
+            {"role": "system", "content": "System prompt"},
+            {"role": "user", "content": "Xin chào!"},
+        ]
+
+
+def test_openai_generate_with_tools_mock_fallback_without_key():
+    """generate_with_tools() falls back to MockOfflineProvider when api_key is missing."""
+    provider = OpenAIProvider(api_key="")
+    result = provider.generate_with_tools("Tra cứu chỉ số bài đăng th_post_001", [])
+    assert result.get("type") in ["tool_call", "text"]
+
+
+def test_openai_generate_with_tools_passes_base_url_and_parses_tool_call():
+    """generate_with_tools() instantiates OpenAI with base_url and parses tool_calls."""
+    with patch("openai.OpenAI") as mock_openai_cls:
+        mock_client = MagicMock()
+        mock_response = MagicMock()
+        mock_choice = MagicMock()
+        mock_tool_call = MagicMock()
+        mock_tool_call.function.name = "threads_search"
+        mock_tool_call.function.arguments = '{"query": "AI", "sort_by": "top_views"}'
+        mock_choice.message.tool_calls = [mock_tool_call]
+        mock_response.choices = [mock_choice]
+        mock_client.chat.completions.create.return_value = mock_response
+        mock_openai_cls.return_value = mock_client
+
+        provider = OpenAIProvider(
+            api_key="valid-dummy-key",
+            model="gh/gpt-4o-mini",
+            base_url="http://localhost:20128/v1",
+        )
+        tools_schema = [
+            {
+                "name": "threads_search",
+                "description": "Tìm kiếm bài đăng",
+                "parameters": {"type": "object", "properties": {}},
+            }
+        ]
+        result = provider.generate_with_tools(
+            "Tìm bài viết AI nhiều view nhất", tools_schema
+        )
+
+        mock_openai_cls.assert_called_once_with(
+            api_key="valid-dummy-key",
+            base_url="http://localhost:20128/v1",
+        )
+        assert result.get("type") == "tool_call"
+        assert result.get("tool_name") == "threads_search"
+        assert result.get("arguments") == {"query": "AI", "sort_by": "top_views"}
+

@@ -212,11 +212,21 @@ class GeminiProvider(BaseLLMProvider):
 
 
 class OpenAIProvider(BaseLLMProvider):
-    """OpenAI Provider (Native Tool Calling với OpenAI SDK)"""
+    """OpenAI Provider (Native Tool Calling với OpenAI SDK, hỗ trợ custom base_url / 9router)"""
 
-    def __init__(self, api_key: str | None = None, model: str | None = None) -> None:
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str | None = None,
+        base_url: str | None = None,
+    ) -> None:
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        self.model_name = model or os.getenv("LLM_MODEL") or "gpt-4o-mini"
+        self.model_name = model or os.getenv("LLM_MODEL") or "gh/gpt-4o-mini"
+        self.base_url = (
+            base_url
+            or os.getenv("OPENAI_BASE_URL")
+            or "http://localhost:20128/v1"
+        )
 
     def generate(self, prompt: str, system_prompt: str = "") -> str:
         if not self.api_key or self.api_key == "your_openai_api_key_here":
@@ -224,7 +234,10 @@ class OpenAIProvider(BaseLLMProvider):
         try:
             from openai import OpenAI
 
-            client = OpenAI(api_key=self.api_key)
+            client_kwargs: dict[str, Any] = {"api_key": self.api_key}
+            if self.base_url:
+                client_kwargs["base_url"] = self.base_url
+            client = OpenAI(**client_kwargs)
             messages: list[Any] = []
             if system_prompt:
                 messages.append({"role": "system", "content": system_prompt})
@@ -250,7 +263,10 @@ class OpenAIProvider(BaseLLMProvider):
         try:
             from openai import OpenAI
 
-            client = OpenAI(api_key=self.api_key)
+            client_kwargs: dict[str, Any] = {"api_key": self.api_key}
+            if self.base_url:
+                client_kwargs["base_url"] = self.base_url
+            client = OpenAI(**client_kwargs)
 
             tools: list[Any] = []
             for tool in tools_schema:
