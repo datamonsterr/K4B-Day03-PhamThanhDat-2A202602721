@@ -9,7 +9,10 @@ import json
 import sys
 from typing import Any
 
-from tools import TOOLS_SCHEMA, dispatch_tool_call  # noqa: F401
+try:
+    from src.tools import TOOLS_SCHEMA, dispatch_tool_call
+except ModuleNotFoundError:
+    from tools import TOOLS_SCHEMA, dispatch_tool_call
 
 if isinstance(sys.stdout, io.TextIOWrapper) and sys.stdout.encoding != "utf-8":
     with contextlib.suppress(Exception):

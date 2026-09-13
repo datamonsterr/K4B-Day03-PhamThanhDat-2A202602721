@@ -74,7 +74,21 @@ class MockOfflineProvider(BaseLLMProvider):
 
         # Search query (top views / keyword search)
         if "tìm" in prompt_lower or "search" in prompt_lower or "nhiều view" in prompt_lower or "nhieu view" in prompt_lower or "liên quan" in prompt_lower or "lien quan" in prompt_lower:
-            keyword = "AI" if ("ai" in prompt_lower or "react" in prompt_lower) else ("Hook" if "hook" in prompt_lower else "Threads")
+            import re
+            quoted = re.findall(r'["\']([^"\']+)["\']', prompt)
+            topic_match = re.search(r'(?:về|liên quan đến|chủ đề|từ khóa)\s+["\']?([^"\'.,?!;]+)["\']?', prompt, re.IGNORECASE)
+
+            if quoted:
+                keyword = quoted[0].strip()
+            elif topic_match:
+                keyword = topic_match.group(1).strip()
+            elif "ai" in prompt_lower or "react" in prompt_lower:
+                keyword = "AI"
+            elif "hook" in prompt_lower:
+                keyword = "Hook"
+            else:
+                keyword = "Threads"
+
             sort_by = "top_views" if ("view" in prompt_lower or "nhieu" in prompt_lower or "nhiều" in prompt_lower or "top" in prompt_lower) else "recent"
             return {
                 "type": "tool_call",

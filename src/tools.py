@@ -6,6 +6,7 @@ Triển khai tuân thủ chuẩn quinnjr/threads-mcp.
 
 import json
 import os
+import re
 import urllib.parse
 from datetime import datetime, timezone
 from typing import Any
@@ -1002,11 +1003,33 @@ def execute_threads_get_conversation(thread_id: str) -> str:
     )
 
 
+def _matches_threads_query(query: str, text: str, tid: str) -> bool:
+    """Kiểm tra bài viết có khớp với từ khóa tìm kiếm hay không."""
+    q = query.strip().lower()
+    if not q or q in ("threads", "post", "posts", "bài viết", "tất cả", "all", "*"):
+        return True
+    text_lower = text.lower()
+    tid_lower = tid.lower()
+    if q in text_lower or q in tid_lower:
+        return True
+    stopwords = {
+        "tìm", "kiếm", "các", "bài", "viết", "đăng", "về", "có", "nhiều", "lượt",
+        "xem", "view", "views", "like", "likes", "thích", "nhất", "cao", "top",
+        "hot", "gần", "đây", "mới", "recent", "post", "posts", "threads", "kênh",
+        "cho", "tôi", "hãy", "với", "tương", "tác", "của", "và", "những", "thống", "kê"
+    }
+    words = re.findall(r"[\w]+", q)
+    content_words = [w for w in words if w not in stopwords and len(w) >= 2]
+    if not content_words:
+        # Nếu câu truy vấn chỉ chứa từ chỉ ý định sắp xếp, xem như truy vấn chung toàn bộ bài viết
+        return True
+    return any(w in text_lower or w in tid_lower for w in content_words)
+
+
 def execute_threads_search(
     query: str, sort_by: str = "top_views", limit: int = 5
 ) -> str:
     """Tìm kiếm bài viết theo từ khóa và sắp xếp theo lượt xem, lượt thích, hoặc thời gian."""
-    q = query.strip().lower()
     client = get_threads_client()
     if client.is_authenticated():
         try:
@@ -1016,7 +1039,7 @@ def execute_threads_search(
             for item in items:
                 text = item.get("text", "")
                 tid = item.get("id", "")
-                if q in text.lower() or q in tid.lower():
+                if _matches_threads_query(query, text, tid):
                     insights = client.get_insights(tid)
                     entry = dict(item)
                     entry["views"] = insights.get("views", 0)
@@ -1055,7 +1078,7 @@ def execute_threads_search(
 
     matched = []
     for pid, post in MOCK_THREADS.items():
-        if q in post.get("text", "").lower() or q in post.get("id", "").lower():
+        if _matches_threads_query(query, post.get("text", ""), post.get("id", "")):
             insights = MOCK_INSIGHTS.get(pid, {})
             item = dict(post)
             item["views"] = insights.get("views", 0)

@@ -181,6 +181,34 @@ def test_threads_search_not_found():
     assert result["status"] == "NOT_FOUND"
 
 
+def test_threads_search_natural_language_and_intent_matching():
+    """threads_search matches posts using natural language queries and intent stopwords."""
+    # 1. Natural language query with sorting phrase "AI nhiều view nhất"
+    raw = dispatch_tool_call(
+        "threads_search", {"query": "AI nhiều view nhất", "sort_by": "top_views", "limit": 5}
+    )
+    res = json.loads(raw)
+    assert res["status"] == "SUCCESS"
+    assert res["data"][0]["id"] == "th_post_001"
+
+    # 2. Pure intent phrase "Tìm bài viết có nhiều lượt xem nhất"
+    raw_intent = dispatch_tool_call(
+        "threads_search", {"query": "Tìm bài viết có nhiều lượt xem nhất", "sort_by": "top_views", "limit": 5}
+    )
+    res_intent = json.loads(raw_intent)
+    assert res_intent["status"] == "SUCCESS"
+    assert len(res_intent["data"]) >= 2
+    assert res_intent["data"][0]["views"] >= res_intent["data"][1]["views"]
+
+    # 3. Topic keyword "Hook"
+    raw_hook = dispatch_tool_call(
+        "threads_search", {"query": "kỹ thuật viết hook", "sort_by": "top_views", "limit": 5}
+    )
+    res_hook = json.loads(raw_hook)
+    assert res_hook["status"] == "SUCCESS"
+    assert res_hook["data"][0]["id"] == "th_post_002"
+
+
 def test_threads_oauth_authorization_url():
     """ThreadsOAuth generates valid Meta Threads authorization URL with required scopes."""
     from src.tools import ThreadsOAuth

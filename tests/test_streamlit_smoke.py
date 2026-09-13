@@ -153,10 +153,13 @@ def test_streamlit_apptest_mount_and_widgets():
     assert at.session_state["pending_interaction"] is None
     assert at.session_state["waterfall_traces"] == []
 
-    # Sidebar contains provider selectbox
-    assert len(at.sidebar.selectbox) >= 1
-    # Sidebar contains test case buttons and actions
-    assert len(at.sidebar.button) >= 5
+    # Main page contains provider selectbox below prompt
+    assert len(at.selectbox) >= 1
+    # Main page contains suggestion buttons and actions
+    assert len(at.button) >= 5
+    # Sidebar is completely empty
+    assert len(at.sidebar.selectbox) == 0
+    assert len(at.sidebar.button) == 0
 
 
 def test_streamlit_apptest_hitl_permission_card():
