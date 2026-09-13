@@ -47,6 +47,28 @@ python src/app.py --all
 📊 [KẾT QUẢ TEST SUITE]: 2 Đã chạy (TC01, TC02 mẫu) | 3 Đang chờ viết câu hỏi (TODO)
 ```
 
+### Bước 4: Khởi chạy Giao diện Web Streamlit UI & Backend Server (Live Streaming & HITL)
+
+Hệ thống hỗ trợ 2 chế độ vận hành giao diện Web Chat tương tác:
+
+**Cách 1: Khởi chạy tiện lợi qua script `run_ui.py` (Tự động đọc cấu hình `.env`):**
+```bash
+python run_ui.py
+# Hoặc chạy trực tiếp với Streamlit:
+streamlit run src/streamlit_app.py
+```
+> Script tự động đọc `STREAMLIT_PORT` (mặc định `8501`) và `BACKEND_URL` từ `.env`.
+
+**Cách 2: Chạy kiến trúc Client-Server (Starlette Backend + Streamlit Frontend):**
+```bash
+# Terminal 1: Khởi chạy Backend SSE Streaming Server
+python src/app.py --server
+
+# Terminal 2: Khởi chạy Streamlit Web UI kết nối Backend
+python run_ui.py
+```
+*(Giao diện tự động phát hiện trạng thái kết nối Backend. Nếu Backend chưa chạy hoặc người dùng chọn trong Sidebar, hệ thống tự động fallback sang chế độ Local Embedded Engine).*
+
 > 🔑 **QUY ĐỊNH BẮT BUỘC VỀ API KEY VÀ NỘP BÀI (SUBMISSION REQUIREMENT):**  
 > 
 > 1. **Giai đoạn gõ code & debug (Miễn phí 0đ):** Hệ thống mặc định chạy `MockOfflineProvider` giúp bạn thực hành gõ code, kiểm thử logic ban đầu hoàn toàn miễn phí, không tốn token, không lo nghẽn mạng.  
@@ -98,6 +120,9 @@ Học viên làm bài lần lượt theo đúng luồng 3 bước tinh giản d�
 ├── 📄 README.md                 <-- ⚡ [BƯỚC 1] Quickstart setup & Cảnh báo quy định API Key
 ├── 📄 .env.example              <-- 🔑 File cấu hình API Key (Gemini, OpenAI, Anthropic, Mock)
 ├── 📄 requirements.txt          <-- 📦 Thư viện Python tương thích đa nền tảng
+├── 📄 run_ui.py                 <-- 🚀 Script khởi chạy Streamlit Web UI đọc cấu hình .env
+├── 📁 .streamlit/
+│   └── 📄 config.toml           <-- ⚙️ Cấu hình máy chủ Streamlit (headless, port 8501, CORS)
 │
 ├── 📁 config/
 │   ├── 📄 test_cases.example.json <-- 🟢 Mẫu Bộ 5 Test Cases (Copy thành test_cases.json)
@@ -108,7 +133,9 @@ Học viên làm bài lần lượt theo đúng luồng 3 bước tinh giản d�
 │   ├── 📄 tools.py              <-- 🛠️ Backend Tool Schemas JSON & Execution Layer
 │   ├── 📄 prompts.py            <-- 🛡️ System Prompts cho Chatbot và ReAct Agent
 │   ├── 📄 providers.py          <-- 🔌 Multi-Provider LLM Adapter (Gemini/OpenAI/Mock)
-│   ├── 📄 app.py                <-- 🚀 MCP Client & Core Agent App ghép nối ReAct Loop & Trace Log
+│   ├── 📄 app.py                <-- 🚀 MCP Client & Core Agent App + Starlette SSE Backend Server
+│   ├── 📄 agent_stream.py       <-- ⚡ Event Streaming ReAct Engine & HITL Gating Logic
+│   ├── 📄 streamlit_app.py      <-- 📱 Interactive Streamlit Chat UI với Live Status & HITL
 │   └── 📁 ai_levels/            <-- 📚 [REFERENCE ONLY] Code mẫu kiến trúc tham khảo (Không sửa/debug)
 │       └── 📄 README.md         <-- ⚠️ Chú thích mã nguồn tham khảo
 │
