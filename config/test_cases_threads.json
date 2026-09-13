@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Chào bạn, hãy phân tích độ dài lý tưởng của một bài đăng Threads và các kỹ thuật viết hook để giữ chân người đọc trong 3 dòng đầu tiên?",
+    "expected_behavior": "Chatbot/Agent trả lời trực tiếp dựa trên tri thức chuyên môn về Social Media & Content Marketing, không cần gọi bất kỳ Tool nào.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "Hãy tra cứu các chỉ số tương tác (views, likes, replies, reposts) của bài đăng có mã 'th_post_001'.",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu dữ liệu thời gian thực, tự động phát sinh Tool Call 'threads_get_insights' với thread_id='th_post_001' và tổng hợp các chỉ số.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "content_publishing",
+    "question": "Hãy xuất bản bài viết mới lên kênh Threads với nội dung: 'ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent'.",
+    "expected_behavior": "Agent tự động phát sinh Tool Call 'threads_create_thread' với nội dung đã được cung cấp, xuất bản bài viết lên kênh Threads và thông báo kết quả/permalink cho người quản lý.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "search_and_analytics",
+    "question": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất (top views) liên quan đến chủ đề 'AI' trên kênh để phân tích xu hướng tương tác.",
+    "expected_behavior": "Agent nhận diện nhu cầu tìm kiếm bài viết theo chủ đề và hiệu suất, tự động phát sinh Tool Call 'threads_search' với query='AI' và sort_by='top_views'. Sau khi nhận kết quả bài viết top 1 ('th_post_001' với 25,400 views), Agent phân tích các chỉ số tương tác nổi bật và đưa ra báo cáo chi tiết.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "tool_failure_and_edge_case",
+    "question": "Hãy kiểm tra thông tin chi tiết và số liệu tương tác cho bài đăng có mã 'th_post_999'.",
+    "expected_behavior": "Agent nhận diện mã bài viết 'th_post_999' và phát sinh Tool Call 'threads_get_thread'. Tool thực thi thất bại và trả về trạng thái NOT_FOUND ('Thread with ID th_post_999 not found'). Agent tiếp nhận Observation lỗi, xử lý an toàn (Anti-Hallucination) và thông báo trung thực cho người dùng rằng bài viết không tồn tại trên hệ thống thay vì tự bịa đặt dữ liệu.",
+    "complexity": "Medium"
+  }
+]

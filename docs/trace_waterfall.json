@@ -1,29 +1,42 @@
 [
   {
     "step": 1,
-    "query": "Chào bạn, bạn có thể giới thiệu quy chế học vụ cơ bản của Đại học VinUni không?",
-    "action_type": "FINAL_ANSWER",
-    "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool.",
-    "output": "[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-    "latency_ms": 2845.93
-  },
-  {
-    "step": 1,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất liên quan đến chủ đề AI trên kênh",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "tool_name": "threads_search",
     "arguments": {
-      "student_id": "SV2026001"
+      "limit": 5,
+      "query": "AI",
+      "sort_by": "top_views"
     },
-    "observation": {},
-    "latency_ms": 799.12
+    "observation": {
+      "status": "SUCCESS",
+      "query": "AI",
+      "sort_by": "top_views",
+      "count": 1,
+      "data": [
+        {
+          "id": "th_post_001",
+          "text": "ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent",
+          "timestamp": "2026-09-12T10:00:00Z",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.net/@vinuni_ai_hub/post/th_post_001",
+          "reply_control": "everyone",
+          "views": 25400,
+          "likes": 1820,
+          "replies": 125,
+          "reposts": 88
+        }
+      ]
+    },
+    "latency_ms": 11248.37
   },
   {
     "step": 2,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất liên quan đến chủ đề AI trên kênh",
     "action_type": "FINAL_ANSWER",
     "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chưa thể trả lời chi tiết do chưa nhận được dữ liệu từ MCP Server (hãy hoàn thành TODO 2.1).",
+    "output": "Kết quả tìm kiếm cho chủ đề 'AI' (Lượt xem cao nhất):\n1. [th_post_001]: \"ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent\" (25,400 Views, 1,820 Likes) - Link: https://www.threads.net/@vinuni_ai_hub/post/th_post_001",
     "latency_ms": 10.0
   }
 ]

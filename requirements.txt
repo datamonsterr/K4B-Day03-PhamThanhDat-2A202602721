@@ -5,3 +5,5 @@ python-dotenv
 requests
 pydantic
 rich
+openrouter
+pytest
