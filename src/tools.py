@@ -344,6 +344,8 @@ class ThreadsClient:
 
     def is_authenticated(self) -> bool:
         """Kiểm tra xem Client đã có Access Token hợp lệ để gọi API trực tiếp hay chưa."""
+        if os.getenv("PYTEST_CURRENT_TEST") and not os.getenv("TEST_LIVE_THREADS"):
+            return False
         if not self.access_token:
             return False
         return self.access_token not in [
