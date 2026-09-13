@@ -211,7 +211,7 @@ git commit -m "feat: add AgentEvent and basic stream_react_agent generator"
 - Modify: `src/agent_stream.py`
 - Modify: `src/test_agent_stream.py`
 
-- [ ] **Step 1: Write failing tests for read tool auto-execution and write tool permission gating**
+- [x] **Step 1: Write failing tests for read tool auto-execution and write tool permission gating**
 
 Add to `src/test_agent_stream.py`:
 ```python
@@ -306,12 +306,12 @@ def test_stream_resume_after_rejection():
     assert "đã hủy" in final_event.content.lower() or "từ chối" in final_event.content.lower()
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `.venv/bin/pytest src/test_agent_stream.py -k "permission or resume" -v`
 Expected: FAIL (write tool permission logic not yet implemented).
 
-- [ ] **Step 3: Implement write tool permission check and resumption handling in `src/agent_stream.py`**
+- [x] **Step 3: Implement write tool permission check and resumption handling in `src/agent_stream.py`**
 
 Update `src/agent_stream.py` to check `WRITE_TOOLS` and handle `resumed_action`:
 ```python
@@ -362,12 +362,12 @@ And in `stream_react_agent`:
   - If `tool_name == "ask_user_input"`: yield `AgentEvent(type="ask_input", content=arguments.get("prompt", ""), step=step)`.
   - If `tool_name == "ask_user_choice"`: yield `AgentEvent(type="ask_choice", content=arguments.get("prompt", ""), options=arguments.get("options", []), step=step)`.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `.venv/bin/pytest src/test_agent_stream.py -v`
 Expected: ALL PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/agent_stream.py src/test_agent_stream.py
