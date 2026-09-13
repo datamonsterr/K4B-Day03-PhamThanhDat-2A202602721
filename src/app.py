@@ -4,6 +4,7 @@ Thực thi so sánh giữa Chatbot Baseline (Cấp 2) và ReAct Agent kết nố
 """
 
 import contextlib
+import dataclasses
 import io
 import json
 import os
@@ -11,6 +12,12 @@ import sys
 import time
 
 from dotenv import load_dotenv
+from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse, StreamingResponse
+from starlette.routing import Route
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -246,7 +253,110 @@ def run_react_agent(user_query: str, provider, mcp_server: MCPThreadsServer) -> 
     return trace_logs
 
 
+def create_backend_app(provider=None, mcp_server=None) -> Starlette:
+    """
+    Tạo Starlette application phục vụ REST API và SSE streaming cho ReAct Agent.
+    """
+    try:
+        from agent_stream import stream_react_agent
+    except ImportError:
+        from src.agent_stream import stream_react_agent
+
+    app_provider = provider if provider is not None else get_llm_provider()
+    app_server = mcp_server if mcp_server is not None else MCPThreadsServer()
+
+    async def health(request: Request) -> JSONResponse:
+        model_name = getattr(app_provider, "model_name", "unknown")
+        server_name = getattr(app_server, "server_name", "vinuni-threads-mcp-server")
+        return JSONResponse(
+            {
+                "status": "ok",
+                "provider": str(model_name),
+                "server": str(server_name),
+            }
+        )
+
+    async def get_tools(request: Request) -> JSONResponse:
+        return JSONResponse(app_server.list_tools())
+
+    async def get_test_cases(request: Request) -> JSONResponse:
+        return JSONResponse(load_test_cases())
+
+    async def chat_stream(request: Request) -> StreamingResponse:
+        try:
+            body = await request.json()
+        except Exception:
+            body = {}
+
+        query = body.get("query", "")
+        req_provider = body.get("provider")
+        resumed_action = body.get("resumed_action")
+
+        if req_provider:
+            try:
+                active_provider = get_llm_provider(req_provider)
+            except Exception:
+                active_provider = app_provider
+        else:
+            active_provider = app_provider
+
+        def event_generator():
+            try:
+                for event in stream_react_agent(
+                    user_query=query,
+                    provider=active_provider,
+                    mcp_server=app_server,
+                    resumed_action=resumed_action,
+                ):
+                    if dataclasses.is_dataclass(event):
+                        event_dict = dataclasses.asdict(event)
+                    elif isinstance(event, dict):
+                        event_dict = event
+                    else:
+                        event_dict = vars(event)
+                    yield f"data: {json.dumps(event_dict, ensure_ascii=False)}\n\n"
+            finally:
+                yield f"data: {json.dumps({'type': 'done'})}\n\n"
+
+        return StreamingResponse(
+            event_generator(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+            },
+        )
+
+    routes = [
+        Route("/health", health, methods=["GET"]),
+        Route("/api/tools", get_tools, methods=["GET"]),
+        Route("/api/test-cases", get_test_cases, methods=["GET"]),
+        Route("/api/chat/stream", chat_stream, methods=["POST"]),
+    ]
+
+    middleware = [
+        Middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_methods=["*"],
+            allow_headers=["*"],
+            allow_credentials=True,
+        )
+    ]
+
+    return Starlette(routes=routes, middleware=middleware)
+
+
 if __name__ == "__main__":
+    if "--help" in sys.argv or "-h" in sys.argv:
+        print("Usage: python src/app.py [OPTIONS]")
+        print("\nOptions:")
+        print("  --server       Khởi chạy backend server (Starlette + Uvicorn) cho Frontend/SSE streaming")
+        print("  --interactive  Trò chuyện trực tiếp liên tục với Threads ReAct Agent qua CLI")
+        print("  --all          Chạy toàn bộ danh sách Test Cases kiểm thử tự động")
+        print("  --help, -h     Hiển thị hướng dẫn sử dụng")
+        sys.exit(0)
+
     print("==========================================================")
     print("📱 THREADS AI AGENT - DAY 03 LAB: CHATBOT VS REACT AGENT")
     print("==========================================================")
@@ -256,6 +366,16 @@ if __name__ == "__main__":
 
     print(f"🔌 LLM Provider: {provider.__class__.__name__}")
     print(f"🌐 MCP Server: {mcp_server.server_name}\n")
+
+    if "--server" in sys.argv:
+        import uvicorn
+
+        host = os.getenv("BACKEND_HOST") or os.getenv("MCP_SERVER_HOST") or "0.0.0.0"
+        port = int(os.getenv("BACKEND_PORT") or os.getenv("MCP_SERVER_PORT") or "8000")
+        print(f"🚀 [SERVER MODE] Khởi chạy backend server tại http://{host}:{port} ...")
+        app = create_backend_app(provider=provider, mcp_server=mcp_server)
+        uvicorn.run(app, host=host, port=port)
+        sys.exit(0)
 
     tests = load_test_cases()
     print(f"✅ Đã tải thành công {len(tests)} Test Cases thử nghiệm.\n")
@@ -316,8 +436,9 @@ if __name__ == "__main__":
     else:
         # Chế độ mặc định khi chỉ gõ 'python src/app.py'
         print("ℹ️ HƯỚNG DẪN SỬ DỤNG CHƯƠNG TRÌNH:")
-        print("  1. Chat trực tiếp liên tục:   python src/app.py --interactive")
-        print("  2. Chạy toàn bộ Test Cases:    python src/app.py --all\n")
+        print("  1. Chạy Backend Server (API/SSE): python src/app.py --server")
+        print("  2. Chat trực tiếp liên tục:       python src/app.py --interactive")
+        print("  3. Chạy toàn bộ Test Cases:        python src/app.py --all\n")
 
         sample_query = tests[1]["question"]
         print("--- 🏁 DEMO CHẠY THỬ 1 TEST CASE MẪU (TC02: Tra cứu chỉ số tương tác) ---")

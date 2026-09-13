@@ -477,9 +477,12 @@ class OpenRouterProvider(BaseLLMProvider):
             )
 
 
-def get_llm_provider() -> BaseLLMProvider:
-    """Factory function khởi tạo Provider theo LLM_PROVIDER env variable"""
-    provider_type = os.getenv("LLM_PROVIDER", "gemini").lower()
+def get_llm_provider(provider_type: str | None = None) -> BaseLLMProvider:
+    """Factory function khởi tạo Provider theo LLM_PROVIDER env variable hoặc provider_type chỉ định"""
+    if not provider_type:
+        provider_type = os.getenv("LLM_PROVIDER", "gemini").lower()
+    else:
+        provider_type = provider_type.lower()
 
     if provider_type == "openrouter":
         key = os.getenv("OPENROUTER_API_KEY")
