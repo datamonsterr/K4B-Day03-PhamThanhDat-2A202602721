@@ -496,7 +496,8 @@ def main() -> None:
             def stream_tokens_iter():
                 tokens_found = False
                 for ev in event_iter:
-                    st.session_state.waterfall_traces.append(ev)
+                    if ev.get("type") not in ("token", "done"):
+                        st.session_state.waterfall_traces.append(ev)
                     if ev.get("type") == "token":
                         tokens_found = True
                         yield ev.get("content", "")
@@ -662,7 +663,8 @@ def main() -> None:
             def stream_tokens_iter():
                 tokens_found = False
                 for ev in event_iter:
-                    st.session_state.waterfall_traces.append(ev)
+                    if ev.get("type") not in ("token", "done"):
+                        st.session_state.waterfall_traces.append(ev)
                     if ev.get("type") == "token":
                         tokens_found = True
                         yield ev.get("content", "")
