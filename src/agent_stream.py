@@ -3,7 +3,6 @@
 Provides generator-based ReAct loop yielding real-time events for Streamlit UI.
 """
 from dataclasses import dataclass, field
-import json
 import time
 from typing import Any, Generator, Literal
 
@@ -40,7 +39,7 @@ def stream_tokens(text: str, delay: float = 0.015) -> Generator[AgentEvent, None
     words = text.split(" ")
     for i, word in enumerate(words):
         chunk = word if i == len(words) - 1 else word + " "
-        yield AgentEvent(type="token", content=" " if i > 0 and chunk.startswith(" ") else chunk)
+        yield AgentEvent(type="token", content=chunk)
         if delay > 0:
             time.sleep(delay)
 
@@ -101,9 +100,10 @@ def stream_react_agent(
                 latency_ms=latency_ms,
             )
 
+            tool_start = time.time()
             mcp_result = mcp_server.call_tool(tool_name, arguments)
             obs_data = mcp_result.get("result", {})
-            obs_latency = round((time.time() - step_start_time) * 1000, 2)
+            obs_latency = round((time.time() - tool_start) * 1000, 2)
 
             yield AgentEvent(
                 type="observation",
@@ -123,3 +123,12 @@ def stream_react_agent(
             for token_event in stream_tokens(final_answer, delay=0.0):
                 yield token_event
             break
+
+        else:
+            yield AgentEvent(
+                type="error",
+                content=f"Unrecognized response type: {resp_type}",
+                step=step,
+            )
+            break
+
