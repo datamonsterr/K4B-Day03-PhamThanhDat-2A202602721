@@ -180,3 +180,167 @@ def test_threads_search_not_found():
     result = json.loads(raw)
     assert result["status"] == "NOT_FOUND"
 
+
+def test_threads_oauth_authorization_url():
+    """ThreadsOAuth generates valid Meta Threads authorization URL with required scopes."""
+    from src.tools import ThreadsOAuth
+
+    oauth = ThreadsOAuth(app_id="test_app_123", app_secret="test_secret_456")
+    url = oauth.get_authorization_url()
+    assert "https://threads.net/oauth/authorize" in url
+    assert "client_id=test_app_123" in url
+    assert "redirect_uri=" in url
+    assert "scope=" in url
+    assert "response_type=code" in url
+
+
+def test_threads_oauth_exchange_code_and_long_lived_token():
+    """ThreadsOAuth exchanges auth code for short-lived token then for long-lived token."""
+    from unittest.mock import patch
+    from src.tools import ThreadsOAuth
+
+    oauth = ThreadsOAuth(app_id="test_app_123", app_secret="test_secret_456")
+    with patch("requests.post") as mock_post, patch("requests.get") as mock_get:
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json.return_value = {
+            "access_token": "short_lived_token",
+            "user_id": "12345",
+        }
+        short_res = oauth.exchange_code_for_token("test_auth_code")
+        assert short_res["access_token"] == "short_lived_token"
+
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = {
+            "access_token": "long_lived_token_xyz",
+            "token_type": "bearer",
+            "expires_in": 5184000,
+        }
+        long_res = oauth.get_long_lived_token("short_lived_token")
+        assert long_res["access_token"] == "long_lived_token_xyz"
+
+
+def test_threads_oauth_save_and_load_token(tmp_path):
+    """ThreadsOAuth saves and loads tokens from JSON file."""
+    from src.tools import ThreadsOAuth
+
+    token_file = str(tmp_path / ".threads-token.json")
+    oauth = ThreadsOAuth(app_id="test_app", app_secret="test_secret")
+    oauth.save_token_to_file(
+        {"access_token": "tok_123", "user_id": "u1", "expires_at": 1800000000},
+        filepath=token_file,
+    )
+    loaded = oauth.load_token_from_file(filepath=token_file)
+    assert loaded is not None
+    assert loaded["access_token"] == "tok_123"
+    assert loaded["user_id"] == "u1"
+
+
+def test_threads_client_get_profile_live():
+    """ThreadsClient fetches profile via real Graph API GET /me."""
+    from unittest.mock import patch
+    from src.tools import ThreadsClient
+
+    client = ThreadsClient(access_token="valid_token", user_id="me")
+    with patch.object(client.session, "get") as mock_get:
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = {
+            "id": "123456",
+            "username": "live_user",
+            "name": "Live Threads User",
+        }
+        profile = client.get_profile()
+        assert profile["username"] == "live_user"
+        mock_get.assert_called_once()
+        call_args, call_kwargs = mock_get.call_args
+        assert "https://graph.threads.net/v1.0/me" in call_args[0]
+        assert call_kwargs["params"]["access_token"] == "valid_token"
+
+
+def test_threads_client_create_thread_two_step():
+    """ThreadsClient publishes thread in 2 steps: media container and publish."""
+    from unittest.mock import MagicMock, patch
+    from src.tools import ThreadsClient
+
+    client = ThreadsClient(access_token="valid_token", user_id="me")
+    with patch.object(client.session, "post") as mock_post:
+        res1 = MagicMock(status_code=200)
+        res1.json.return_value = {"id": "container_999"}
+        res2 = MagicMock(status_code=200)
+        res2.json.return_value = {"id": "published_thread_111"}
+        mock_post.side_effect = [res1, res2]
+
+        result = client.create_thread(text="Hello from live real Threads API!")
+        assert result["id"] == "published_thread_111"
+        assert mock_post.call_count == 2
+        # Check Step 1 endpoint & params
+        step1_url = mock_post.call_args_list[0][0][0]
+        step1_params = mock_post.call_args_list[0][1]["params"]
+        assert "threads" in step1_url
+        assert step1_params["text"] == "Hello from live real Threads API!"
+        assert step1_params["media_type"] == "TEXT"
+
+        # Check Step 2 endpoint & params
+        step2_url = mock_post.call_args_list[1][0][0]
+        step2_params = mock_post.call_args_list[1][1]["params"]
+        assert "threads_publish" in step2_url
+        assert step2_params["creation_id"] == "container_999"
+
+
+def test_threads_client_reply_to_thread():
+    """ThreadsClient replies to a thread using reply_to_id in media container."""
+    from unittest.mock import MagicMock, patch
+    from src.tools import ThreadsClient
+
+    client = ThreadsClient(access_token="valid_token", user_id="me")
+    with patch.object(client.session, "post") as mock_post:
+        res1 = MagicMock(status_code=200)
+        res1.json.return_value = {"id": "container_rep_01"}
+        res2 = MagicMock(status_code=200)
+        res2.json.return_value = {"id": "published_rep_01"}
+        mock_post.side_effect = [res1, res2]
+
+        result = client.reply_to_thread(thread_id="th_001", text="Great post!")
+        assert result["id"] == "published_rep_01"
+        assert mock_post.call_args_list[0][1]["params"]["reply_to_id"] == "th_001"
+
+
+def test_threads_client_get_insights():
+    """ThreadsClient parses metrics from insights API response."""
+    from unittest.mock import patch
+    from src.tools import ThreadsClient
+
+    client = ThreadsClient(access_token="valid_token")
+    with patch.object(client.session, "get") as mock_get:
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = {
+            "data": [
+                {"name": "views", "values": [{"value": 15000}]},
+                {"name": "likes", "values": [{"value": 850}]},
+            ]
+        }
+        insights = client.get_insights("th_post_001")
+        assert insights["views"] == 15000
+        assert insights["likes"] == 850
+
+
+def test_dispatch_tool_call_uses_live_client_when_authenticated():
+    """dispatch_tool_call routes to ThreadsClient when authenticated with token."""
+    from unittest.mock import MagicMock, patch
+
+    with patch("src.tools.get_threads_client") as mock_get_client:
+        mock_client = MagicMock()
+        mock_client.is_authenticated.return_value = True
+        mock_client.get_profile.return_value = {
+            "id": "live_user_1",
+            "username": "live_real_user",
+            "followers_count": 500,
+        }
+        mock_get_client.return_value = mock_client
+
+        raw = dispatch_tool_call("threads_get_profile", {})
+        result = json.loads(raw)
+        assert result["status"] == "SUCCESS"
+        assert result["data"]["username"] == "live_real_user"
+        mock_client.get_profile.assert_called_once()
+
+

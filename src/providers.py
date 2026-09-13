@@ -220,7 +220,9 @@ class OpenAIProvider(BaseLLMProvider):
         model: str | None = None,
         base_url: str | None = None,
     ) -> None:
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.api_key = (
+            api_key if api_key is not None else os.getenv("OPENAI_API_KEY")
+        )
         self.model_name = model or os.getenv("LLM_MODEL") or "gh/gpt-4o-mini"
         self.base_url = (
             base_url

@@ -1,11 +1,25 @@
 [
   {
     "step": 1,
+    "query": "Chào bạn, hãy phân tích độ dài lý tưởng của một bài đăng Threads và các kỹ thuật viết hook để giữ chân người đọc trong 3 dòng đầu tiên?",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Độ dài lý tưởng của một bài đăng Threads là 100-200 từ. Kỹ thuật viết hook hiệu quả bao gồm:\n1. Đặt câu hỏi gây hứng thú ngay dòng đầu tiên.\n2. Sử dụng số liệu hoặc thống kê để thu hút sự chú ý.\n3. Kết thúc hook bằng một tuyên bố mạnh mẽ hoặc lời mời hành động.",
+    "latency_ms": 4027.36
+  },
+  {
+    "step": 1,
     "query": "Hãy tra cứu các chỉ số tương tác (views, likes, replies, reposts) của bài đăng có mã 'th_post_001'.",
     "action_type": "TOOL_EXECUTION",
     "tool_name": "threads_get_insights",
     "arguments": {
-      "thread_id": "th_post_001"
+      "thread_id": "th_post_001",
+      "metrics": [
+        "views",
+        "likes",
+        "replies",
+        "reposts"
+      ]
     },
     "observation": {
       "status": "SUCCESS",
@@ -14,18 +28,124 @@
         "views": 25400,
         "likes": 1820,
         "replies": 125,
-        "reposts": 88,
-        "quotes": 34
+        "reposts": 88
       }
     },
-    "latency_ms": 0.03
+    "latency_ms": 3051.29
   },
   {
     "step": 2,
     "query": "Hãy tra cứu các chỉ số tương tác (views, likes, replies, reposts) của bài đăng có mã 'th_post_001'.",
     "action_type": "FINAL_ANSWER",
     "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chỉ số tương tác bài viết 'th_post_001': 25,400 Views, 1,820 Likes, 125 Replies, 88 Reposts, 34 Quotes.",
+    "output": "Chỉ số tương tác bài viết 'th_post_001': 25,400 Views, 1,820 Likes, 125 Replies, 88 Reposts, 0 Quotes.",
+    "latency_ms": 10.0
+  },
+  {
+    "step": 1,
+    "query": "Hãy xuất bản bài viết mới lên kênh Threads với nội dung: 'ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent'.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "threads_create_thread",
+    "arguments": {
+      "text": "ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "id": "th_post_003",
+      "text": "ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent",
+      "permalink": "https://www.threads.net/@vinuni_ai_hub/post/th_post_003",
+      "message": "Xuất bản bài viết thành công lên Threads với ID 'th_post_003'."
+    },
+    "latency_ms": 2234.57
+  },
+  {
+    "step": 2,
+    "query": "Hãy xuất bản bài viết mới lên kênh Threads với nội dung: 'ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent'.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
+    "output": "Xuất bản thành công bài viết mới lên Threads (ID: th_post_003). Liên kết bài đăng: https://www.threads.net/@vinuni_ai_hub/post/th_post_003. Nội dung: \"ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent\"",
+    "latency_ms": 10.0
+  },
+  {
+    "step": 1,
+    "query": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất (top views) liên quan đến chủ đề 'AI' trên kênh để phân tích xu hướng tương tác.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "threads_search",
+    "arguments": {
+      "query": "AI",
+      "sort_by": "top_views",
+      "limit": 5
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "query": "AI",
+      "sort_by": "top_views",
+      "count": 2,
+      "data": [
+        {
+          "id": "th_post_001",
+          "text": "ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent",
+          "timestamp": "2026-09-12T10:00:00Z",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.net/@vinuni_ai_hub/post/th_post_001",
+          "reply_control": "everyone",
+          "views": 25400,
+          "likes": 1820,
+          "replies": 125,
+          "reposts": 88
+        },
+        {
+          "id": "th_post_003",
+          "text": "ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent",
+          "timestamp": "2026-09-13T08:56:43.772783+00:00",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.net/@vinuni_ai_hub/post/th_post_003",
+          "reply_control": "everyone",
+          "views": 1,
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        }
+      ]
+    },
+    "latency_ms": 1788.77
+  },
+  {
+    "step": 2,
+    "query": "Hãy tìm cho tôi bài viết có nhiều lượt xem nhất (top views) liên quan đến chủ đề 'AI' trên kênh để phân tích xu hướng tương tác.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
+    "output": "Kết quả tìm kiếm cho chủ đề 'AI' (Lượt xem cao nhất):\n1. [th_post_001]: \"ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent\" (25,400 Views, 1,820 Likes) - Link: https://www.threads.net/@vinuni_ai_hub/post/th_post_001\n2. [th_post_003]: \"ReAct Agent và MCP Protocol là bước ngoặt đưa AI từ Chatbot phản hồi tĩnh sang Hệ thống Tác tử tự chủ hành động. Cùng thảo luận nhé! #VinUniAI #ReActAgent\" (1 Views, 0 Likes) - Link: https://www.threads.net/@vinuni_ai_hub/post/th_post_003",
+    "latency_ms": 10.0
+  },
+  {
+    "step": 1,
+    "query": "Hãy kiểm tra thông tin chi tiết và số liệu tương tác cho bài đăng có mã 'th_post_999'.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "threads_get_thread",
+    "arguments": {
+      "thread_id": "th_post_999",
+      "fields": [
+        "text",
+        "timestamp",
+        "likes_count",
+        "replies_count",
+        "reposts_count",
+        "quotes_count"
+      ]
+    },
+    "observation": {
+      "status": "NOT_FOUND",
+      "message": "Thread with ID 'th_post_999' not found on Threads API."
+    },
+    "latency_ms": 2537.67
+  },
+  {
+    "step": 2,
+    "query": "Hãy kiểm tra thông tin chi tiết và số liệu tương tác cho bài đăng có mã 'th_post_999'.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
+    "output": "Thread with ID 'th_post_999' not found on Threads API.",
     "latency_ms": 10.0
   }
 ]
