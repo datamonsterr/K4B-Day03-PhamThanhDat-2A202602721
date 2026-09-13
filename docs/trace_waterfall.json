@@ -6,38 +6,34 @@
     "arguments": {},
     "observation": {},
     "options": [],
-    "latency_ms": 5311.56,
+    "latency_ms": 7611.91,
     "step": 1
   },
   {
     "type": "final_answer",
-    "content": "Hook 3 dòng đầu:\n\n1. Đặt câu hỏi mũi tên → khai thác tò mò.  \n2. Ra giá trị cụ thể → “Bạn sẽ học X trong 60 giây”.  \n3. Kết thúc bằng lời hứa hoặc đối lập mạnh → “Không cần nền tảng, chỉ cần thói quen này”.",
+    "content": "Hello. Threads channel agent ready. Commands: stats, search topics, draft post (needs approval), replies. What next?",
     "tool_name": "",
     "arguments": {},
     "observation": {},
     "options": [],
-    "latency_ms": 5311.56,
+    "latency_ms": 7611.91,
     "step": 1
   },
   {
     "type": "thought",
-    "content": "OpenAI quyết định gọi công cụ 'threads_search' với tham số: {\"query\": \"sơn tùng\", \"sort_by\": \"recent\", \"limit\": 1}",
+    "content": "OpenAI quyết định gọi công cụ 'threads_get_profile' với tham số: {}",
     "tool_name": "",
     "arguments": {},
     "observation": {},
     "options": [],
-    "latency_ms": 9448.3,
+    "latency_ms": 9852.73,
     "step": 1
   },
   {
     "type": "tool_call",
     "content": "",
-    "tool_name": "threads_search",
-    "arguments": {
-      "query": "sơn tùng",
-      "sort_by": "recent",
-      "limit": 1
-    },
+    "tool_name": "threads_get_profile",
+    "arguments": {},
     "observation": {},
     "options": [],
     "latency_ms": 0.0,
@@ -46,24 +42,24 @@
   {
     "type": "observation",
     "content": "",
-    "tool_name": "threads_search",
-    "arguments": {
-      "query": "sơn tùng",
-      "sort_by": "recent",
-      "limit": 1
-    },
+    "tool_name": "threads_get_profile",
+    "arguments": {},
     "observation": {
-      "status": "NOT_FOUND",
-      "query": "sơn tùng",
-      "message": "Không tìm thấy bài viết nào phù hợp với từ khóa 'sơn tùng'."
+      "status": "SUCCESS",
+      "data": {
+        "id": "28841094058829054",
+        "username": "datam0nster",
+        "name": "Nobody cares",
+        "threads_profile_picture_url": "https://instagram.fhan14-3.fna.fbcdn.net/v/t51.82787-19/656832195_18072160250253748_4987883349172113427_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=111&ccb=7-5&_nc_sid=30ff31&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy5DMyJ9&_nc_ohc=aWrj1zrLMOQQ7kNvwGboQxE&_nc_oc=AdqSpGErxt-jC2ScELfdJgauOtmidbFZVkUybuy1kl7rz5nAYN-BYXVdaoKoSM-8EQR5E6ZLxDlg0aoyn_SMTpb7&_nc_zt=24&_nc_ht=instagram.fhan14-3.fna&edm=AP4hL3IEAAAA&_nc_gid=6IJGcFU2JD4_zxFGhP2NzQ&_nc_tpa=Q5bMBQIfWYuSMIdhq_0RJgJ4Qm-tfVQrWnOsMxXO4cwbKRQtljiKUAejvucxDEk47r5UhXMN_WlpZIrYTA&oh=00_AQLllr-qOFINgwi1ptrnu0wQIxjC4EG_EphrUGLvbdeAmw&oe=6AAC5621"
+      }
     },
     "options": [],
-    "latency_ms": 698.91,
+    "latency_ms": 497.0,
     "step": 1
   },
   {
     "type": "final_answer",
-    "content": "Không tìm thấy bài viết nào phù hợp với từ khóa 'sơn tùng'.",
+    "content": "Hồ sơ kênh @datam0nster (Nobody cares):  (Người theo dõi: 0).",
     "tool_name": "",
     "arguments": {},
     "observation": {},
@@ -73,18 +69,18 @@
   },
   {
     "type": "thought",
-    "content": "OpenAI quyết định gọi công cụ '{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads' với tham số: {\"limit\": 10}",
+    "content": "OpenAI quyết định gọi công cụ 'threads_get_threads' với tham số: {\"limit\": 10}",
     "tool_name": "",
     "arguments": {},
     "observation": {},
     "options": [],
-    "latency_ms": 3253.6,
+    "latency_ms": 25617.59,
     "step": 1
   },
   {
     "type": "tool_call",
     "content": "",
-    "tool_name": "{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads",
+    "tool_name": "threads_get_threads",
     "arguments": {
       "limit": 10
     },
@@ -96,70 +92,13 @@
   {
     "type": "observation",
     "content": "",
-    "tool_name": "{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads",
+    "tool_name": "threads_get_threads",
     "arguments": {
       "limit": 10
-    },
-    "observation": {
-      "status": "UNKNOWN_TOOL",
-      "error": "Tool '{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads' không tồn tại!"
-    },
-    "options": [],
-    "latency_ms": 0.03,
-    "step": 1
-  },
-  {
-    "type": "final_answer",
-    "content": "Công cụ '{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads' không tồn tại trên hệ thống MCP Server.",
-    "tool_name": "",
-    "arguments": {},
-    "observation": {},
-    "options": [],
-    "latency_ms": 0.0,
-    "step": 2
-  },
-  {
-    "type": "thought",
-    "content": "OpenAI quyết định gọi công cụ 'threads_get_threads' với tham số: {\"limit\": 2}",
-    "tool_name": "",
-    "arguments": {},
-    "observation": {},
-    "options": [],
-    "latency_ms": 6855.54,
-    "step": 1
-  },
-  {
-    "type": "tool_call",
-    "content": "",
-    "tool_name": "threads_get_threads",
-    "arguments": {
-      "limit": 2
-    },
-    "observation": {},
-    "options": [],
-    "latency_ms": 0.0,
-    "step": 1
-  },
-  {
-    "type": "observation",
-    "content": "",
-    "tool_name": "threads_get_threads",
-    "arguments": {
-      "limit": 2
     },
     "observation": {
       "status": "SUCCESS",
       "data": [
-        {
-          "id": "17902297278576781",
-          "media_product_type": "THREADS",
-          "media_type": "TEXT_POST",
-          "permalink": "https://www.threads.com/@datam0nster/post/DdOSLx1Elk2",
-          "username": "datam0nster",
-          "text": "Live test approved post!",
-          "timestamp": "2026-09-13T09:53:26+0000",
-          "shortcode": "DdOSLx1Elk2"
-        },
         {
           "id": "18069523004746345",
           "media_product_type": "THREADS",
@@ -169,23 +108,114 @@
           "text": "I use antigravity CLI, free pro subscription, quality is quite good. I think Google will win eventually. They just shipped too slow @meta.ai",
           "timestamp": "2026-09-11T12:43:19+0000",
           "shortcode": "DdJcCsWkvEz"
+        },
+        {
+          "id": "18107485346274900",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Dc7gzO8kv_v",
+          "username": "datam0nster",
+          "text": "Cuối tháng này mới tốt nghiệp, mình tính đi làm 1 2 năm rồi đi du học thạc sĩ nước ngoài ngành CS (cụ thể là Đức). Vướng mỗi cái là chưa đi nvqs, mình may mắn là tay chân lành lặn, mắt sáng, sk cũng loại 1 2 khả năng được gọi đi cũng cao. Mình có nên nộp đơn tự nguyện đi sớm cho nhanh không vì mình có người thân nói rằng có thể vào đơn vị gần nhà do rất thiếu chỉ tiêu có trình độ kỹ thuật, cuối tuần có thể nghỉ tranh thủ để về học tiếng tí tiếng Đức lên B2.",
+          "timestamp": "2026-09-06T02:55:32+0000",
+          "shortcode": "Dc7gzO8kv_v"
+        },
+        {
+          "id": "18105769619141909",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Dc0W3gUkpQ8",
+          "username": "datam0nster",
+          "text": "Khuyên mọi người là không nên share wifi nhà mình cho bất cứ ai, nếu nhà bán hàng hãy tách riêng wifi quán và wifi cá nhân.\nHôm nay mình setup camera cho nhà mình vì share cho 3 bạn thuê cùng nên có những khu vực chung. Thì mình là swe và hay vọc nên muốn lưu vào ổ cứng homeserver thay vì thẻ nhớ (quá đắt) hay cloud (đắt hơn).\nThì nó có mấy cái giao thức, phổ biến là rtsp xong dùng 1 app ở PC là ok. Nhưng máy lại k ghi password với username của device. Mình lười tra ném cho AI tự hack.",
+          "timestamp": "2026-09-03T08:14:03+0000",
+          "shortcode": "Dc0W3gUkpQ8"
+        },
+        {
+          "id": "18106808035896365",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DceZTrrkmat",
+          "username": "datam0nster",
+          "text": "Mình có 2 suy nghĩ khá ngược lại với các engineer khác.\n1. Vibe coding là một kỹ năng cần thiết.\n2. Spec driven development (SDD) bị overrate \nMình là engineer mà nói 1 thì lại hơi sai, nhưng mình nghĩ là do các b đang dùng vibe coding sai cách, là hiểu nó như 1 kiểu người. Nhưng mình hiểu nó như 1 kỹ năng tạo ra sản phẩm theo ý mình nhanh nhất khi chưa có quá nhiều thông tin, có thể gọi sản phẩm này là prototype. (còn tiếp)",
+          "timestamp": "2026-08-25T19:32:05+0000",
+          "shortcode": "DceZTrrkmat"
+        },
+        {
+          "id": "17916301014429336",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Dcc-lkgEtHF",
+          "username": "datam0nster",
+          "text": "Ai đã học khoá Vin AI thực chiến rồi cho em xin ít review được k ạ. Em nghe nói là rất nặng, fulltime. Vậy đổi lại được những gì ngoài 8tr vậy ạ, nếu so với tự học có hơn nhiều không ạ. Chương trình học như nào ạ, có khác nhau nhiều giữa các level ko ạ.",
+          "timestamp": "2026-08-25T06:19:22+0000",
+          "shortcode": "Dcc-lkgEtHF"
+        },
+        {
+          "id": "18100208753221838",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DcBwu7yElBB",
+          "username": "datam0nster",
+          "text": "[thợ điều hoà bịp]\nChuyện là book được ông thợ điều hoà trên mạng. Đến kiểm tra - vệ sinh bơm ga do máy bị thiếu ga. Ông đo ra 50 psi, chụp vỏ máy ghi test pressure input là 270 psi và bảo mình thiếu 220 psi. Ga hỏi ông bao nhiêu 1 psi, ga r22 thôi 40k / 1 psi. Ông nhân kiểu gì ra 850k anh lấy em 800k trong khi 40k x 220 ra cỡ 8tr8 mình lên mạng tra ngay thì ra.",
+          "timestamp": "2026-08-14T16:38:49+0000",
+          "shortcode": "DcBwu7yElBB"
+        },
+        {
+          "id": "18092480192636923",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DcAX5eqkvye",
+          "username": "datam0nster",
+          "text": "Fact: nếu b đi thuê trọ thì chủ trọ là người bán còn bạn là khách hàng. Chủ trọ bướng thì cho mấy cái đơn kiện giá điện sai quy định, pccc ko việc gì phải sợ cả...",
+          "timestamp": "2026-08-14T03:42:33+0000",
+          "shortcode": "DcAX5eqkvye"
+        },
+        {
+          "id": "17909712531451536",
+          "media_product_type": "THREADS",
+          "media_type": "CAROUSEL_ALBUM",
+          "media_url": "https://instagram.fhan14-3.fna.fbcdn.net/v/t51.82787-15/773013852_18097156217253748_7544596137552093377_n.webp?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=YZvsqZ76DpYQ7kNvwFoCDBC&_nc_oc=Adrzh7u9HYlTtxjRT1EooSzgOs7FOt2qUVmRzmpb-BRRHbNST8Pp_cQGkO1Q9hXyCRPQe56wqxH2IfwqJohDYGdf&_nc_zt=23&_nc_ht=instagram.fhan14-3.fna&edm=ACx9VUEEAAAA&_nc_gid=nHTpIVhivWl0Uz4m_KoP9A&_nc_tpa=Q5bMBQJbVe4p6NL9vD4ogu3VVrb9AIqIZhxfrCynVqNXWtw17zUgtFrvhbKz1eZgylftA2DXLzi1t5v1uw&oh=00_AQLoYZ3inuXe-DJtdCmVNdnQQnEEW7NHlPE7PauqChHZeA&oe=6AAC3317",
+          "permalink": "https://www.threads.com/@datam0nster/post/Db2z7ahEjVM",
+          "username": "datam0nster",
+          "text": "[chuyện startup việt nam]\nSau chuyện startup đầu tiên trong thread của mình. Mình đang trong quá trình thanh toán hợp đồng và bảo vệ xong đồ án rồi. Đi chơi, chuyển nhà vài hôm rồi bắt tay đi pvan. Nhà mình cũng biết vụ nợ lương nên bác mình làm sale IT cũng gửi mình một số vị trí. Trong đó có 1 sếp mở startup chuyên làm các dự án nhà nước, tuyển một team làm project mới về app quản lý kpi cho mấy cán bộ, viên chức.\nBác mình cap một post fb của anh CEO này gửi cho mình.",
+          "timestamp": "2026-08-10T10:35:05+0000",
+          "shortcode": "Db2z7ahEjVM"
+        },
+        {
+          "id": "18085852226674888",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Db099WqEo94",
+          "username": "datam0nster",
+          "text": "[chuyện làm việc ở startup việt nam]\nSơ qua profile của mình thì sắp ra trường ngành IT và có cỡ hơn năm kn ở 1 startup. Mình intern từ năm 3, sau đó fulltime và lead các project nhỏ thôi. Cơ địa mình adhd nên định hướng tương lai là sở hữu nhiều business nhỏ ra tiền hơn là lm cty lớn chức cao vì mình nhanh bị chán nên muốn join nhiều startup học hỏi và phát triển nhanh hơn.\nMỉnh sẽ kể 2 câu chuyện để các b nào cần hình dung được bên trong một tech startup ở vn nó ntn.",
+          "timestamp": "2026-08-09T17:24:15+0000",
+          "shortcode": "Db099WqEo94"
+        },
+        {
+          "id": "18074303690356488",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DbVvV4tElUl",
+          "username": "datam0nster",
+          "text": "[PASS PHÒNG CCMN 24M2 - CỬA SỔ TO, VIEW ĐẸP] 📍 Vị trí: Nguyễn Ngọc Vũ (Ngay cạnh Lê Văn Lương) \n\n💰 Giá thuê: 3.3 triệu/tháng (Đóng 1 cọc 1, hợp đồng còn ~9 tháng)\n\n 🎁 ĐẶC BIỆT: Hỗ trợ ngay 1.3 triệu cho bạn nào chốt. (10/8 là có thể dọn vào).\n \n✅ ƯU ĐIỂM: Diện tích 24m2, vệ sinh khép kín, có bếp và bồn rửa. Cửa sổ siêu to, view ngắm cảnh cực chill.",
+          "timestamp": "2026-07-28T14:20:04+0000",
+          "shortcode": "DbVvV4tElUl"
         }
       ],
       "paging": {
         "cursors": {
-          "before": "QVFIVGFHWjQ3c2wtVmxnWGV0cDhPblNPUnRSdlVMSExKeXI5TmhSei1DOUNpQW5WUkJMb0hFRng5Yi1ZAbkhGb05nMkpLY0xIQzdZAVHdILVh1WFFhbXM0YVd3",
-          "after": "QVFIVEQtVUV0X25LamJIblNYN2NSeTk1UFRhM2RiZAmRnQ3FGdEVUWHdwV3doUm92aWhhVFpTaWNZAbl9FVGVHM29yN09iZAzRaaWN5Vzc0TkhvNlM1S0dOWHZA3"
+          "before": "QVFIVEQtVUV0X25LamJIblNYN2NSeTk1UFRhM2RiZAmRnQ3FGdEVUWHdwV3doUm92aWhhVFpTaWNZAbl9FVGVHM29yN09iZAzRaaWN5Vzc0TkhvNlM1S0dOWHZA3",
+          "after": "QVFIVDhhNFhqMjdUcU1vOEF0MmlTdXNCaGxpdzMyRUt2NGFtZAW1jX0pCWXVVZAU9oRFdmanp4Nm9lRGRvSzVDZA1I5NGxueXBEZAEZA4Ymp5eWExeWczelo5SXBR"
         },
-        "next": "https://graph.threads.net/v1.0/17841437612417514/threads?fields=id%2Cmedia_product_type%2Cmedia_type%2Cmedia_url%2Cpermalink%2Cusername%2Ctext%2Ctimestamp%2Cshortcode&limit=2&access_token=THAAWzW7ufhWBBYmI5NkJ2OWVUaWpDM28xa19fUzlMRGptbEpEc1J5RndLR3dZAQVFOVWlJOWdJbWpJWl9ZAWDRKTmQwUExXNTlxd3ZADX2piTzI3eE5zTWN1MFQtaVh4cXlVeG9mTFVBQnhFMVRkQWsyOW5XUFNsdzh3dGRna1puNUVhbXhDNVhMRDBHYnlVUmsZD&after=QVFIVEQtVUV0X25LamJIblNYN2NSeTk1UFRhM2RiZAmRnQ3FGdEVUWHdwV3doUm92aWhhVFpTaWNZAbl9FVGVHM29yN09iZAzRaaWN5Vzc0TkhvNlM1S0dOWHZA3"
+        "next": "https://graph.threads.net/v1.0/17841437612417514/threads?fields=id%2Cmedia_product_type%2Cmedia_type%2Cmedia_url%2Cpermalink%2Cusername%2Ctext%2Ctimestamp%2Cshortcode&limit=10&access_token=THAAWzW7ufhWBBYmI5NkJ2OWVUaWpDM28xa19fUzlMRGptbEpEc1J5RndLR3dZAQVFOVWlJOWdJbWpJWl9ZAWDRKTmQwUExXNTlxd3ZADX2piTzI3eE5zTWN1MFQtaVh4cXlVeG9mTFVBQnhFMVRkQWsyOW5XUFNsdzh3dGRna1puNUVhbXhDNVhMRDBHYnlVUmsZD&after=QVFIVDhhNFhqMjdUcU1vOEF0MmlTdXNCaGxpdzMyRUt2NGFtZAW1jX0pCWXVVZAU9oRFdmanp4Nm9lRGRvSzVDZA1I5NGxueXBEZAEZA4Ymp5eWExeWczelo5SXBR"
       }
     },
     "options": [],
-    "latency_ms": 358.24,
+    "latency_ms": 426.46,
     "step": 1
   },
   {
     "type": "final_answer",
-    "content": "Danh sách 2 bài viết gần đây trên kênh:\n- [17902297278576781]: \"Live test approved post!...\"\n- [18069523004746345]: \"I use antigravity CLI, free pro subscription, quality is qui...\"",
+    "content": "Danh sách 10 bài viết gần đây trên kênh:\n- [18069523004746345]: \"I use antigravity CLI, free pro subscription, quality is qui...\"\n- [18107485346274900]: \"Cuối tháng này mới tốt nghiệp, mình tính đi làm 1 2 năm rồi ...\"\n- [18105769619141909]: \"Khuyên mọi người là không nên share wifi nhà mình cho bất cứ...\"\n- [18106808035896365]: \"Mình có 2 suy nghĩ khá ngược lại với các engineer khác.\n1. V...\"\n- [17916301014429336]: \"Ai đã học khoá Vin AI thực chiến rồi cho em xin ít review đư...\"\n- [18100208753221838]: \"[thợ điều hoà bịp]\nChuyện là book được ông thợ điều hoà trên...\"\n- [18092480192636923]: \"Fact: nếu b đi thuê trọ thì chủ trọ là người bán còn bạn là ...\"\n- [17909712531451536]: \"[chuyện startup việt nam]\nSau chuyện startup đầu tiên trong ...\"\n- [18085852226674888]: \"[chuyện làm việc ở startup việt nam]\nSơ qua profile của mình...\"\n- [18074303690356488]: \"[PASS PHÒNG CCMN 24M2 - CỬA SỔ TO, VIEW ĐẸP] 📍 Vị trí: Nguyễ...\"",
     "tool_name": "",
     "arguments": {},
     "observation": {},
@@ -195,18 +225,18 @@
   },
   {
     "type": "thought",
-    "content": "OpenAI quyết định gọi công cụ '{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads' với tham số: {\"limit\": 10}",
+    "content": "OpenAI quyết định gọi công cụ 'threads_get_threads' với tham số: {\"limit\": 10}",
     "tool_name": "",
     "arguments": {},
     "observation": {},
     "options": [],
-    "latency_ms": 6957.21,
+    "latency_ms": 6823.09,
     "step": 1
   },
   {
     "type": "tool_call",
     "content": "",
-    "tool_name": "{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads",
+    "tool_name": "threads_get_threads",
     "arguments": {
       "limit": 10
     },
@@ -218,49 +248,135 @@
   {
     "type": "observation",
     "content": "",
-    "tool_name": "{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads",
+    "tool_name": "threads_get_threads",
     "arguments": {
       "limit": 10
     },
     "observation": {
-      "status": "UNKNOWN_TOOL",
-      "error": "Tool '{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads' không tồn tại!"
+      "status": "SUCCESS",
+      "data": [
+        {
+          "id": "18069523004746345",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DdJcCsWkvEz",
+          "username": "datam0nster",
+          "text": "I use antigravity CLI, free pro subscription, quality is quite good. I think Google will win eventually. They just shipped too slow @meta.ai",
+          "timestamp": "2026-09-11T12:43:19+0000",
+          "shortcode": "DdJcCsWkvEz"
+        },
+        {
+          "id": "18107485346274900",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Dc7gzO8kv_v",
+          "username": "datam0nster",
+          "text": "Cuối tháng này mới tốt nghiệp, mình tính đi làm 1 2 năm rồi đi du học thạc sĩ nước ngoài ngành CS (cụ thể là Đức). Vướng mỗi cái là chưa đi nvqs, mình may mắn là tay chân lành lặn, mắt sáng, sk cũng loại 1 2 khả năng được gọi đi cũng cao. Mình có nên nộp đơn tự nguyện đi sớm cho nhanh không vì mình có người thân nói rằng có thể vào đơn vị gần nhà do rất thiếu chỉ tiêu có trình độ kỹ thuật, cuối tuần có thể nghỉ tranh thủ để về học tiếng tí tiếng Đức lên B2.",
+          "timestamp": "2026-09-06T02:55:32+0000",
+          "shortcode": "Dc7gzO8kv_v"
+        },
+        {
+          "id": "18105769619141909",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Dc0W3gUkpQ8",
+          "username": "datam0nster",
+          "text": "Khuyên mọi người là không nên share wifi nhà mình cho bất cứ ai, nếu nhà bán hàng hãy tách riêng wifi quán và wifi cá nhân.\nHôm nay mình setup camera cho nhà mình vì share cho 3 bạn thuê cùng nên có những khu vực chung. Thì mình là swe và hay vọc nên muốn lưu vào ổ cứng homeserver thay vì thẻ nhớ (quá đắt) hay cloud (đắt hơn).\nThì nó có mấy cái giao thức, phổ biến là rtsp xong dùng 1 app ở PC là ok. Nhưng máy lại k ghi password với username của device. Mình lười tra ném cho AI tự hack.",
+          "timestamp": "2026-09-03T08:14:03+0000",
+          "shortcode": "Dc0W3gUkpQ8"
+        },
+        {
+          "id": "18106808035896365",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DceZTrrkmat",
+          "username": "datam0nster",
+          "text": "Mình có 2 suy nghĩ khá ngược lại với các engineer khác.\n1. Vibe coding là một kỹ năng cần thiết.\n2. Spec driven development (SDD) bị overrate \nMình là engineer mà nói 1 thì lại hơi sai, nhưng mình nghĩ là do các b đang dùng vibe coding sai cách, là hiểu nó như 1 kiểu người. Nhưng mình hiểu nó như 1 kỹ năng tạo ra sản phẩm theo ý mình nhanh nhất khi chưa có quá nhiều thông tin, có thể gọi sản phẩm này là prototype. (còn tiếp)",
+          "timestamp": "2026-08-25T19:32:05+0000",
+          "shortcode": "DceZTrrkmat"
+        },
+        {
+          "id": "17916301014429336",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Dcc-lkgEtHF",
+          "username": "datam0nster",
+          "text": "Ai đã học khoá Vin AI thực chiến rồi cho em xin ít review được k ạ. Em nghe nói là rất nặng, fulltime. Vậy đổi lại được những gì ngoài 8tr vậy ạ, nếu so với tự học có hơn nhiều không ạ. Chương trình học như nào ạ, có khác nhau nhiều giữa các level ko ạ.",
+          "timestamp": "2026-08-25T06:19:22+0000",
+          "shortcode": "Dcc-lkgEtHF"
+        },
+        {
+          "id": "18100208753221838",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DcBwu7yElBB",
+          "username": "datam0nster",
+          "text": "[thợ điều hoà bịp]\nChuyện là book được ông thợ điều hoà trên mạng. Đến kiểm tra - vệ sinh bơm ga do máy bị thiếu ga. Ông đo ra 50 psi, chụp vỏ máy ghi test pressure input là 270 psi và bảo mình thiếu 220 psi. Ga hỏi ông bao nhiêu 1 psi, ga r22 thôi 40k / 1 psi. Ông nhân kiểu gì ra 850k anh lấy em 800k trong khi 40k x 220 ra cỡ 8tr8 mình lên mạng tra ngay thì ra.",
+          "timestamp": "2026-08-14T16:38:49+0000",
+          "shortcode": "DcBwu7yElBB"
+        },
+        {
+          "id": "18092480192636923",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DcAX5eqkvye",
+          "username": "datam0nster",
+          "text": "Fact: nếu b đi thuê trọ thì chủ trọ là người bán còn bạn là khách hàng. Chủ trọ bướng thì cho mấy cái đơn kiện giá điện sai quy định, pccc ko việc gì phải sợ cả...",
+          "timestamp": "2026-08-14T03:42:33+0000",
+          "shortcode": "DcAX5eqkvye"
+        },
+        {
+          "id": "17909712531451536",
+          "media_product_type": "THREADS",
+          "media_type": "CAROUSEL_ALBUM",
+          "media_url": "https://instagram.fhan14-3.fna.fbcdn.net/v/t51.82787-15/773013852_18097156217253748_7544596137552093377_n.webp?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=YZvsqZ76DpYQ7kNvwFoCDBC&_nc_oc=Adrzh7u9HYlTtxjRT1EooSzgOs7FOt2qUVmRzmpb-BRRHbNST8Pp_cQGkO1Q9hXyCRPQe56wqxH2IfwqJohDYGdf&_nc_zt=23&_nc_ht=instagram.fhan14-3.fna&edm=ACx9VUEEAAAA&_nc_gid=8L2JTrdyEKxfdhAEeYJYEA&_nc_tpa=Q5bMBQKPmK9T83NCt_iW4nYRW8VEjboP8Anzaes--32DeuGOTrw_jLNg-1WhApCHaZHuKqvzUkgC3phZGA&oh=00_AQJo7RxnCJT_TgAxv3FAGPV_MUhlHflJh-yFAREA5N5dKw&oe=6AAC3317",
+          "permalink": "https://www.threads.com/@datam0nster/post/Db2z7ahEjVM",
+          "username": "datam0nster",
+          "text": "[chuyện startup việt nam]\nSau chuyện startup đầu tiên trong thread của mình. Mình đang trong quá trình thanh toán hợp đồng và bảo vệ xong đồ án rồi. Đi chơi, chuyển nhà vài hôm rồi bắt tay đi pvan. Nhà mình cũng biết vụ nợ lương nên bác mình làm sale IT cũng gửi mình một số vị trí. Trong đó có 1 sếp mở startup chuyên làm các dự án nhà nước, tuyển một team làm project mới về app quản lý kpi cho mấy cán bộ, viên chức.\nBác mình cap một post fb của anh CEO này gửi cho mình.",
+          "timestamp": "2026-08-10T10:35:05+0000",
+          "shortcode": "Db2z7ahEjVM"
+        },
+        {
+          "id": "18085852226674888",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/Db099WqEo94",
+          "username": "datam0nster",
+          "text": "[chuyện làm việc ở startup việt nam]\nSơ qua profile của mình thì sắp ra trường ngành IT và có cỡ hơn năm kn ở 1 startup. Mình intern từ năm 3, sau đó fulltime và lead các project nhỏ thôi. Cơ địa mình adhd nên định hướng tương lai là sở hữu nhiều business nhỏ ra tiền hơn là lm cty lớn chức cao vì mình nhanh bị chán nên muốn join nhiều startup học hỏi và phát triển nhanh hơn.\nMỉnh sẽ kể 2 câu chuyện để các b nào cần hình dung được bên trong một tech startup ở vn nó ntn.",
+          "timestamp": "2026-08-09T17:24:15+0000",
+          "shortcode": "Db099WqEo94"
+        },
+        {
+          "id": "18074303690356488",
+          "media_product_type": "THREADS",
+          "media_type": "TEXT_POST",
+          "permalink": "https://www.threads.com/@datam0nster/post/DbVvV4tElUl",
+          "username": "datam0nster",
+          "text": "[PASS PHÒNG CCMN 24M2 - CỬA SỔ TO, VIEW ĐẸP] 📍 Vị trí: Nguyễn Ngọc Vũ (Ngay cạnh Lê Văn Lương) \n\n💰 Giá thuê: 3.3 triệu/tháng (Đóng 1 cọc 1, hợp đồng còn ~9 tháng)\n\n 🎁 ĐẶC BIỆT: Hỗ trợ ngay 1.3 triệu cho bạn nào chốt. (10/8 là có thể dọn vào).\n \n✅ ƯU ĐIỂM: Diện tích 24m2, vệ sinh khép kín, có bếp và bồn rửa. Cửa sổ siêu to, view ngắm cảnh cực chill.",
+          "timestamp": "2026-07-28T14:20:04+0000",
+          "shortcode": "DbVvV4tElUl"
+        }
+      ],
+      "paging": {
+        "cursors": {
+          "before": "QVFIVEQtVUV0X25LamJIblNYN2NSeTk1UFRhM2RiZAmRnQ3FGdEVUWHdwV3doUm92aWhhVFpTaWNZAbl9FVGVHM29yN09iZAzRaaWN5Vzc0TkhvNlM1S0dOWHZA3",
+          "after": "QVFIVDhhNFhqMjdUcU1vOEF0MmlTdXNCaGxpdzMyRUt2NGFtZAW1jX0pCWXVVZAU9oRFdmanp4Nm9lRGRvSzVDZA1I5NGxueXBEZAEZA4Ymp5eWExeWczelo5SXBR"
+        },
+        "next": "https://graph.threads.net/v1.0/17841437612417514/threads?fields=id%2Cmedia_product_type%2Cmedia_type%2Cmedia_url%2Cpermalink%2Cusername%2Ctext%2Ctimestamp%2Cshortcode&limit=10&access_token=THAAWzW7ufhWBBYmI5NkJ2OWVUaWpDM28xa19fUzlMRGptbEpEc1J5RndLR3dZAQVFOVWlJOWdJbWpJWl9ZAWDRKTmQwUExXNTlxd3ZADX2piTzI3eE5zTWN1MFQtaVh4cXlVeG9mTFVBQnhFMVRkQWsyOW5XUFNsdzh3dGRna1puNUVhbXhDNVhMRDBHYnlVUmsZD&after=QVFIVDhhNFhqMjdUcU1vOEF0MmlTdXNCaGxpdzMyRUt2NGFtZAW1jX0pCWXVVZAU9oRFdmanp4Nm9lRGRvSzVDZA1I5NGxueXBEZAEZA4Ymp5eWExeWczelo5SXBR"
+      }
     },
     "options": [],
-    "latency_ms": 0.07,
+    "latency_ms": 495.62,
     "step": 1
   },
   {
     "type": "final_answer",
-    "content": "Công cụ '{\"fields\": [\"id\", \"username\", \"name\", \"threads_biography\", \"followers_count\"]}threads_get_threads' không tồn tại trên hệ thống MCP Server.",
+    "content": "Danh sách 10 bài viết gần đây trên kênh:\n- [18069523004746345]: \"I use antigravity CLI, free pro subscription, quality is qui...\"\n- [18107485346274900]: \"Cuối tháng này mới tốt nghiệp, mình tính đi làm 1 2 năm rồi ...\"\n- [18105769619141909]: \"Khuyên mọi người là không nên share wifi nhà mình cho bất cứ...\"\n- [18106808035896365]: \"Mình có 2 suy nghĩ khá ngược lại với các engineer khác.\n1. V...\"\n- [17916301014429336]: \"Ai đã học khoá Vin AI thực chiến rồi cho em xin ít review đư...\"\n- [18100208753221838]: \"[thợ điều hoà bịp]\nChuyện là book được ông thợ điều hoà trên...\"\n- [18092480192636923]: \"Fact: nếu b đi thuê trọ thì chủ trọ là người bán còn bạn là ...\"\n- [17909712531451536]: \"[chuyện startup việt nam]\nSau chuyện startup đầu tiên trong ...\"\n- [18085852226674888]: \"[chuyện làm việc ở startup việt nam]\nSơ qua profile của mình...\"\n- [18074303690356488]: \"[PASS PHÒNG CCMN 24M2 - CỬA SỔ TO, VIEW ĐẸP] 📍 Vị trí: Nguyễ...\"",
     "tool_name": "",
     "arguments": {},
     "observation": {},
     "options": [],
     "latency_ms": 0.0,
     "step": 2
-  },
-  {
-    "type": "thought",
-    "content": "OpenAI quyết định gọi công cụ 'threads_create_thread' với tham số: {\"text\": \"I am also an AI, guess my model\", \"reply_control\": \"everyone\"}",
-    "tool_name": "",
-    "arguments": {},
-    "observation": {},
-    "options": [],
-    "latency_ms": 4606.53,
-    "step": 1
-  },
-  {
-    "type": "ask_permission",
-    "content": "",
-    "tool_name": "threads_create_thread",
-    "arguments": {
-      "text": "I am also an AI, guess my model",
-      "reply_control": "everyone"
-    },
-    "observation": {},
-    "options": [],
-    "latency_ms": 4606.53,
-    "step": 1
   }
 ]
